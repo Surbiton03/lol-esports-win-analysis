@@ -101,3 +101,14 @@ To further explore how map side interacts with T1's early-game performance and m
 | Red  |      -364.78 |     394.00 |
 
 **Significance:** This pivot table reveals that T1's early-game gold difference is heavily tied to both the map side and the match outcome. Notably, T1 performs significantly better in the early game when playing on the Blue side. Even in their eventual losses, their average 10-minute gold deficit on the Blue side (-124 gold) is far less severe than their deficit on the Red side (-365 gold). This suggests the Blue side offers T1 a much more stable early game.
+
+## Assessment of Missingness
+
+### MNAR Analysis
+In this dataset, I believe the **league** column is likely **MNAR (Missing Not At Random)**.
+
+**Reasoning:**
+The missingness of the league name often depends on the value of the league itself. In competitive League of Legends data collection (such as Oracle's Elixir), matches from major, premier leagues (like the LCK, LPL, or LCS) are recorded with 100% accuracy because they are the highest priority for data analysts. However, matches from amateur, independent, or "Tier 3" tournaments frequently lack a league name because those leagues are small, unofficial, or not recognized by primary data-tracking APIs. Therefore, the fact that a league is a "minor" or "amateur" league is the direct reason why its name is missing from the record.
+
+**Additional Data to make it MAR:**
+To move this column from **MNAR** to **MAR (Missing At Random)**, I would want to obtain a column for **tournament_organizer_type**. If we had a column identifying whether the organizer was "Riot Games Official" versus an "Independent Community Organizer," we might find that the missingness of the league name is purely dependent on the organizer type. By accounting for this third variable, the missingness would no longer depend on the league name itself, effectively making the data MAR.
