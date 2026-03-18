@@ -24,7 +24,7 @@ For esports analysts, coaches, and passionate fans, understanding a team's true 
 ### The Dataset
 The original dataset was sourced from **Oracle's Elixir**, which provides comprehensive, professional League of Legends match data. For the scope of this project, the data was strictly filtered to matches involving T1.
 
-There are originally 120636 rows in this dataset, and the cleaned dataset contains **190 rows** (where each row represents a single professional match played by T1). The columns most relevant to answering our central question are described below:
+There are originally 120636 rows in this dataset, and the cleaned dataset contains **187 rows** (where each row represents a single professional match played by T1). The columns most relevant to answering our central question are described below:
 
 | Column Name | Description |
 | :--- | :--- |
