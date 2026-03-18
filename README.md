@@ -154,7 +154,7 @@ To determine if T1 has an inherent early-game advantage based on map placement, 
 **Justification:** The difference in means is an ideal statistic for this question because we are comparing the central tendencies of two continuous distributions (gold differentials). A permutation test is preferred over a standard t-test because it is non-parametric; it does not assume our data follows a normal distribution, which is important for competitive gaming data that often contains performance outliers.
 
 ### 3. Results and Visualization
-The permutation test yielded an **observed difference of 196.53** and a **p-value of 0.0909**.
+The permutation test yielded an **observed difference of 196.53** and a **p-value of 0.0924**.
 
 <iframe
   src="assets/hypothesis_test.html"
