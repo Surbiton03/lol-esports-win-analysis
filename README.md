@@ -8,7 +8,7 @@ Using a dataset of over 1,000 professional matches, I performed exploratory data
 ---
 Author: Jookyoung Lee
 
-## Introduction
+#### Introduction
 
 **League of Legends (LoL)** is a complex 5v5 multiplayer online battle arena (MOBA) where the ultimate objective is to destroy the enemy team's base. The first 10 to 15 minutes of the match—the "early game"—are primarily spent accumulating resources. Teams gather **Gold** to purchase powerful items and **Experience (XP)** to level up their champion's abilities. 
 
@@ -36,7 +36,7 @@ There are originally 120636 rows in this dataset, and the cleaned dataset contai
 | `csdiffat10` | The Creep Score (minions killed) difference at 10 minutes. |
 | `killsat10` | The total number of kills secured by T1 by the 10-minute mark. |
 
-## Data Cleaning and Exploratory Data Analysis
+#### Data Cleaning and Exploratory Data Analysis
 
 ### Data Cleaning and the Data Generating Process
 To prepare the raw Oracle's Elixir dataset for accurate predictive modeling, I performed several targeted data cleaning steps. Each step was designed to address how the League of Legends esports data is structurally generated and recorded by the underlying API:
@@ -68,3 +68,36 @@ Below are the first five rows of the cleaned dataset used for modeling:
 | LCK    | Red  | False  |          691 |       -242 |        -11 |         3 |
 | LCK    | Red  | True   |          944 |       1010 |          6 |         3 |
 | LCK    | Red  | True   |         3707 |       2419 |         59 |         3 |
+
+### Univariate Analysis
+
+This interactive histogram displays the distribution of T1's gold difference at the 10-minute mark across all analyzed matches. The distribution is centered slightly to the right of zero, indicating a trend where T1 more frequently secures a positive gold lead in the early game rather than falling behind.
+
+<iframe
+  src="assets/univariate_golddiffat10.html"
+  width="800"
+  height="600"
+  frameborder="0"></iframe>
+
+### Bivariate Analysis
+
+This scatter plot illustrates the relationship between T1's Gold Difference and Experience (XP) Difference at the 10-minute mark, with the data points colored by the final match result. There is a strong positive correlation between early gold and XP leads, and the distinct clustering of red "Win" points in the top-right quadrant demonstrates that when T1 secures an advantage in both resources early on, they are highly likely to win the match.
+
+<iframe
+  src="assets/bivariate_scatter.html"
+  width="800"
+  height="600"
+  frameborder="0"></iframe>
+
+### Interesting Aggregates
+
+To further explore how map side interacts with T1's early-game performance and match outcomes, I created a pivot table calculating the average 10-minute gold difference, grouped by map side (Blue vs. Red) and the final match result (Win vs. Loss).
+
+**Pivot Table: Average Gold Difference at 10 Minutes by Side & Result**
+
+| Side | Loss (False) | Win (True) |
+|:-----|-------------:|-----------:|
+| Blue |      -124.14 |     502.95 |
+| Red  |      -364.78 |     394.00 |
+
+**Significance:** This pivot table reveals that T1's early-game gold difference is heavily tied to both the map side and the match outcome. Notably, T1 performs significantly better in the early game when playing on the Blue side. Even in their eventual losses, their average 10-minute gold deficit on the Blue side (-124 gold) is far less severe than their deficit on the Red side (-365 gold). This suggests the Blue side offers T1 a much more stable early game.
