@@ -8,7 +8,7 @@ Using a dataset of over 1,000 professional matches, I performed exploratory data
 ---
 Author: Jookyoung Lee
 
-#### Introduction
+## Introduction
 
 **League of Legends (LoL)** is a complex 5v5 multiplayer online battle arena (MOBA) where the ultimate objective is to destroy the enemy team's base. The first 10 to 15 minutes of the match—the "early game"—are primarily spent accumulating resources. Teams gather **Gold** to purchase powerful items and **Experience (XP)** to level up their champion's abilities. 
 
@@ -36,7 +36,7 @@ There are originally 120636 rows in this dataset, and the cleaned dataset contai
 | `csdiffat10` | The Creep Score (minions killed) difference at 10 minutes. |
 | `killsat10` | The total number of kills secured by T1 by the 10-minute mark. |
 
-#### Data Cleaning and Exploratory Data Analysis
+## Data Cleaning and Exploratory Data Analysis
 
 ### Data Cleaning and the Data Generating Process
 To prepare the raw Oracle's Elixir dataset for accurate predictive modeling, I performed several targeted data cleaning steps. Each step was designed to address how the League of Legends esports data is structurally generated and recorded by the underlying API:
