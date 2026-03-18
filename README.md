@@ -130,8 +130,8 @@ The permutation test yielded an **observed TVD of 0.9909** with a **p-value of 0
   frameborder="0"></iframe>
 
 #### Test 2: Independence from Side
-* **Null Hypothesis (H0):** The missingness of `golddiffat10` does not depend on the map side (Blue vs. Red).
-* **Alternative Hypothesis (H1):** The missingness of `golddiffat10` does depend on the map side.
+* **Null Hypothesis (H₀):** The missingness of `golddiffat10` does not depend on the map side (Blue vs. Red).
+* **Alternative Hypothesis (H₁):** The missingness of `golddiffat10` does depend on the map side.
 
 This test yielded an **observed TVD of 0.0000** and a **p-value of 1.0**, indicating that missingness is completely independent of which side T1 plays on.
 
@@ -143,12 +143,12 @@ Based on these results, we classify the missingness of `golddiffat10` as **Missi
 To determine if T1 has an inherent early-game advantage based on map placement, I performed a permutation test evaluating their Gold Difference at 10 minutes (`golddiffat10`) across the Blue and Red sides.
 
 ### 1. Hypotheses
-* **Null Hypothesis ($$H_0$$):** T1's mean gold difference at 10 minutes is the same whether they play on the Blue side or the Red side. Any observed difference in our dataset is purely due to random chance.
-* **Alternative Hypothesis ($$H_1$$):** T1's mean gold difference at 10 minutes is strictly **greater** when playing on the Blue side compared to the Red side.
+* **Null Hypothesis (H₀):** T1's mean gold difference at 10 minutes is the same whether they play on the Blue side or the Red side. Any observed difference in our dataset is purely due to random chance.
+* **Alternative Hypothesis (H₁):** T1's mean gold difference at 10 minutes is strictly **greater** when playing on the Blue side compared to the Red side.
 
 ### 2. Test Choice and Justification
 * **Test Statistic:** Difference in Means (Mean Blue Gold Diff - Mean Red Gold Diff).
-* **Significance Level ($$\alpha$$):** 0.05
+* **Significance Level (α):** 0.05
 * **Method:** Permutation Test with 10,000 simulations.
 
 **Justification:** The difference in means is an ideal statistic for this question because we are comparing the central tendencies of two continuous distributions (gold differentials). A permutation test is preferred over a standard t-test because it is non-parametric; it does not assume our data follows a normal distribution, which is important for competitive gaming data that often contains performance outliers.
