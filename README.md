@@ -163,6 +163,27 @@ The permutation test yielded an **observed difference of 196.53** and a **p-valu
   frameborder="0"></iframe>
 
 ### 4. Conclusion
-With a p-value of **0.0909**, which is greater than our significance level of **0.05**, we **fail to reject the null hypothesis**. 
+With a p-value of **0.0924**, which is greater than our significance level of **0.05**, we **fail to reject the null hypothesis**. 
 
 While the data shows that T1 averaged roughly 196 more gold on the Blue side than the Red side in this specific timeframe, the statistical evidence is not strong enough to conclude that this is a systematic advantage. This result suggests that the observed difference is reasonably likely to have occurred due to random variation in match performance rather than an inherent map-side advantage. We do not have sufficient evidence to support the claim that T1 performs significantly better on the Blue side early in the game.
+
+## Problem Identification
+
+### The Prediction Problem
+The goal of this project is to predict whether a team (specifically **T1**) will win or lose a match based strictly on their performance and game state at the **10-minute mark**. 
+
+### Type of Problem
+This is a **Binary Classification** problem. The model is tasked with assigning each match to one of two discrete classes: **Win** or **Loss**.
+
+### Response Variable (Target)
+The response variable is **`result`**, where a value of `True` indicates a win and `False` indicates a loss. 
+* **Justification:** This variable is the ultimate "bottom line" of any competitive match. By predicting `result`, we can evaluate how much early-game momentum (gold, experience, and map pressure) actually translates into a final victory, which is the core of our research question.
+
+### Time of Prediction & Data Leakage
+To ensure the model is a valid predictive tool and not simply a retrospective summary, the "time of prediction" is set exactly at **10:00 minutes** into the match. 
+* **Justification:** At this timestamp, we only have access to early-game metrics. To prevent **data leakage**, we have strictly excluded any features that would only be known after the 10-minute mark—such as total towers destroyed, total dragons slain, or end-game gold totals. The model only "sees" what a spectator or coach would see 10 minutes into a live broadcast (e.g., `golddiffat10`, `xpdiffat10`, `killsat10`).
+
+### Evaluation Metric
+The primary evaluation metric for this model is **Accuracy**, supported by the **F1-Score**.
+* **Accuracy:** This is a suitable baseline because the dataset is relatively balanced; top-tier professional teams like T1 generally have win rates that don't suffer from extreme class imbalance (e.g., they aren't winning 99% or 1% of the time). 
+* **F1-Score:** I chose to include the F1-score to account for the balance between **Precision** (how often the model is right when it predicts a T1 win) and **Recall** (how many of T1's actual wins the model was able to capture). This ensures the model isn't simply "over-fitting" to games where T1 has a massive gold lead while ignoring closer matches.
