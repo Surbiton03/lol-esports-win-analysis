@@ -35,3 +35,35 @@ There are originally 120636 rows in this dataset, and the cleaned dataset contai
 | `xpdiffat10` | The total experience (XP) difference between T1 and their opponent at the 10-minute mark. |
 | `csdiffat10` | The Creep Score (minions killed) difference at 10 minutes. |
 | `killsat10` | The total number of kills secured by T1 by the 10-minute mark. |
+
+## Data Cleaning and Exploratory Data Analysis
+
+### Data Cleaning and the Data Generating Process
+To prepare the raw Oracle's Elixir dataset for accurate predictive modeling, I performed several targeted data cleaning steps. Each step was designed to address how the League of Legends esports data is structurally generated and recorded by the underlying API:
+
+**1. Filtering for Team-Level Aggregation (`position == 'team'`)**
+* **The Data Generating Process:** The Oracle's Elixir dataset logs 12 rows for every single professional match: one for each of the 10 individual players, plus two summary rows that aggregate the overall Blue and Red teams. 
+* **Impact on Analysis:** I filtered the dataset to strictly include rows where `teamname == 'T1'` and `position == 'team'`. If I had not done this, my model would have treated the 5 individual T1 players as 5 independent observations for the exact same match. This would have artificially inflated the sample size by 500% and caused severe data leakage, as the match `result` would be duplicated repeatedly.
+
+**2. Feature Selection to Prevent Data Leakage**
+* **The Data Generating Process:** The dataset contains hundreds of columns tracking the entire lifespan of a game, including end-of-game statistics like total game duration, final gold, and nexus kills. 
+* **Impact on Analysis:** Because my research question strictly focuses on the *predictive power of the early game*, I dropped all columns except for the 10-minute telemetry data (`golddiffat10`, `xpdiffat10`, `csdiffat10`, `killsat10`), the target variable (`result`), and necessary metadata. This isolates the timeline, ensuring the model cannot "cheat" by looking at late-game metrics to predict the winner.
+
+**3. Handling Structural Missingness**
+* **The Data Generating Process:** Granular 10-minute telemetry relies on advanced Riot Games API tracking. While major tier-1 leagues (like the LCK or World Championship) consistently capture this telemetry, minor or amateur leagues often lack this infrastructure, resulting in `NaN` values for early-game stats.
+* **Impact on Analysis:** As proven in my missingness permutation test, the absence of this data is Missing at Random (MAR) dependent on the `league`. I chose to drop rows with missing 10-minute features (`t1_clean.dropna()`). This appropriately focuses my analysis entirely on fully-tracked, high-tier professional play, removing noisy or incomplete amateur data.
+
+**4. Data Type Formatting**
+* **Impact on Analysis:** To ensure compatibility with `scikit-learn` classification pipelines, I cast the `date` column to proper datetime objects and formally converted the binary `result` column into boolean values (`True` for Wins, `False` for Losses).
+
+After executing these steps, the final cleaned dataset consists of **187 rows** and **9 columns**. 
+
+### Cleaned DataFrame Head
+Below are the first five rows of the cleaned dataset used for modeling:
+| league   | side   | result   |   golddiffat10 |   xpdiffat10 |   csdiffat10 |   killsat10 |
+|:---------|:-------|:---------|---------------:|-------------:|-------------:|------------:|
+| LCK      | Red    | False    |          -1026 |          166 |           -8 |           1 |
+| LCK      | Blue   | True     |            657 |           45 |           25 |           0 |
+| LCK      | Red    | False    |            691 |         -242 |          -11 |           3 |
+| LCK      | Red    | True     |            944 |         1010 |            6 |           3 |
+| LCK      | Red    | True     |           3707 |         2419 |           59 |           3 |
