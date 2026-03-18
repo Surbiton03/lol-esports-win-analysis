@@ -137,3 +137,32 @@ This test yielded an **observed TVD of 0.0000** and a **p-value of 1.0**, indica
 
 #### Conclusion
 Based on these results, we classify the missingness of `golddiffat10` as **Missing at Random (MAR)**. The missingness is clearly tied to the `league` column; major regions like the LCK have high-fidelity data tracking, while smaller leagues often lack the infrastructure to record 10-minute gold differentials. Because the missingness can be explained by the observed `league` variable, it is MAR.
+
+## Hypothesis Testing
+
+To determine if T1 has an inherent early-game advantage based on map placement, I performed a permutation test evaluating their Gold Difference at 10 minutes (`golddiffat10`) across the Blue and Red sides.
+
+### 1. Hypotheses
+* **Null Hypothesis ($H_0$):** T1's mean gold difference at 10 minutes is the same whether they play on the Blue side or the Red side. Any observed difference in our dataset is purely due to random chance.
+* **Alternative Hypothesis ($H_1$):** T1's mean gold difference at 10 minutes is strictly **greater** when playing on the Blue side compared to the Red side.
+
+### 2. Test Choice and Justification
+* **Test Statistic:** Difference in Means (Mean Blue Gold Diff - Mean Red Gold Diff).
+* **Significance Level ($\alpha$):** 0.05
+* **Method:** Permutation Test with 10,000 simulations.
+
+**Justification:** The difference in means is an ideal statistic for this question because we are comparing the central tendencies of two continuous distributions (gold differentials). A permutation test is preferred over a standard t-test because it is non-parametric; it does not assume our data follows a normal distribution, which is important for competitive gaming data that often contains performance outliers.
+
+### 3. Results and Visualization
+The permutation test yielded an **observed difference of 196.53** and a **p-value of 0.0909**.
+
+<iframe
+  src="assets/hypothesis_test.html"
+  width="800"
+  height="600"
+  frameborder="0"></iframe>
+
+### 4. Conclusion
+With a p-value of **0.0909**, which is greater than our significance level of **0.05**, we **fail to reject the null hypothesis**. 
+
+While the data shows that T1 averaged roughly 196 more gold on the Blue side than the Red side in this specific timeframe, the statistical evidence is not strong enough to conclude that this is a systematic advantage. This result suggests that the observed difference is reasonably likely to have occurred due to random variation in match performance rather than an inherent map-side advantage. We do not have sufficient evidence to support the claim that T1 performs significantly better on the Blue side early in the game.
