@@ -112,3 +112,28 @@ The missingness of the league name often depends on the value of the league itse
 
 **Additional Data to make it MAR:**
 To move this column from **MNAR** to **MAR (Missing At Random)**, I would want to obtain a column for **tournament_organizer_type**. If we had a column identifying whether the organizer was "Riot Games Official" versus an "Independent Community Organizer," we might find that the missingness of the league name is purely dependent on the organizer type. By accounting for this third variable, the missingness would no longer depend on the league name itself, effectively making the data MAR.
+
+### Missingness Dependency
+
+To determine if the missingness of `golddiffat10` is dependent on other variables, I conducted two permutation tests using **Total Variation Distance (TVD)** as the test statistic.
+
+#### Test 1: Dependency on League
+* **Null Hypothesis (H0):** The missingness of `golddiffat10` does not depend on the league.
+* **Alternative Hypothesis (H1):** The missingness of `golddiffat10` does depend on the league.
+
+The permutation test yielded an **observed TVD of 0.9909** with a **p-value of 0.0**. As shown in the distribution below, our observed statistic is a massive outlier compared to the null distribution.
+
+<iframe
+  src="assets/missingness_tvd.html"
+  width="800"
+  height="600"
+  frameborder="0"></iframe>
+
+#### Test 2: Independence from Side
+* **Null Hypothesis (H0):** The missingness of `golddiffat10` does not depend on the map side (Blue vs. Red).
+* **Alternative Hypothesis (H1):** The missingness of `golddiffat10` does depend on the map side.
+
+This test yielded an **observed TVD of 0.0000** and a **p-value of 1.0**, indicating that missingness is completely independent of which side T1 plays on.
+
+#### Conclusion
+Based on these results, we classify the missingness of `golddiffat10` as **Missing at Random (MAR)**. The missingness is clearly tied to the `league` column; major regions like the LCK have high-fidelity data tracking, while smaller leagues often lack the infrastructure to record 10-minute gold differentials. Because the missingness can be explained by the observed `league` variable, it is MAR.
