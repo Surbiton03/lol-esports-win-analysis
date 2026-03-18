@@ -60,10 +60,11 @@ After executing these steps, the final cleaned dataset consists of **187 rows** 
 
 ### Cleaned DataFrame Head
 Below are the first five rows of the cleaned dataset used for modeling:
-| league   | side   | result   |   golddiffat10 |   xpdiffat10 |   csdiffat10 |   killsat10 |
-|:---------|:-------|:---------|---------------:|-------------:|-------------:|------------:|
-| LCK      | Red    | False    |          -1026 |          166 |           -8 |           1 |
-| LCK      | Blue   | True     |            657 |           45 |           25 |           0 |
-| LCK      | Red    | False    |            691 |         -242 |          -11 |           3 |
-| LCK      | Red    | True     |            944 |         1010 |            6 |           3 |
-| LCK      | Red    | True     |           3707 |         2419 |           59 |           3 |
+
+| league | side | result | golddiffat10 | xpdiffat10 | csdiffat10 | killsat10 |
+|:-------|:-----|:-------|-------------:|-----------:|-----------:|----------:|
+| LCK    | Red  | False  |        -1026 |        166 |         -8 |         1 |
+| LCK    | Blue | True   |          657 |         45 |         25 |         0 |
+| LCK    | Red  | False  |          691 |       -242 |        -11 |         3 |
+| LCK    | Red  | True   |          944 |       1010 |          6 |         3 |
+| LCK    | Red  | True   |         3707 |       2419 |         59 |         3 |
