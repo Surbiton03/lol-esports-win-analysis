@@ -109,6 +109,10 @@ To move this column from **MNAR** to **MAR (Missing At Random)**, I would want t
 
 To determine if the missingness of `golddiffat10` is dependent on other variables, I conducted two permutation tests using **Total Variation Distance (TVD)** as the test statistic.
 
+#### Test 1: Dependency on League
+* **Null Hypothesis (H0):** The missingness of `golddiffat10` does not depend on the league.
+* **Alternative Hypothesis (H1):** The missingness of `golddiffat10` does depend on the league.
+
 --- Missingness vs. League ---
 
 Observed TVD: 0.9909
@@ -116,18 +120,6 @@ Observed TVD: 0.9909
 P-value: 0.0000
 
 Conclusion: Reject the Null! Missingness DEPENDS on the league.
-
---- Missingness vs. Side ---
-
-Observed TVD: 0.0000
-
-P-value: 1.0000
-
-Conclusion: Fail to Reject the Null. Missingness DOES NOT depend on the side.
-
-#### Test 1: Dependency on League
-* **Null Hypothesis (H0):** The missingness of `golddiffat10` does not depend on the league.
-* **Alternative Hypothesis (H1):** The missingness of `golddiffat10` does depend on the league.
 
 The permutation test yielded an **observed TVD of 0.9909** with a **p-value of 0.0**. As shown in the distribution below, our observed statistic is a massive outlier compared to the null distribution.
 
@@ -140,6 +132,14 @@ The permutation test yielded an **observed TVD of 0.9909** with a **p-value of 0
 #### Test 2: Independence from Side
 * **Null Hypothesis (H₀):** The missingness of `golddiffat10` does not depend on the map side (Blue vs. Red).
 * **Alternative Hypothesis (H₁):** The missingness of `golddiffat10` does depend on the map side.
+
+--- Missingness vs. Side ---
+
+Observed TVD: 0.0000
+
+P-value: 1.0000
+
+Conclusion: Fail to Reject the Null. Missingness DOES NOT depend on the side.
 
 This test yielded an **observed TVD of 0.0000** and a **p-value of 1.0**, indicating that missingness is completely independent of which side T1 plays on.
 
