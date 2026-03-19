@@ -255,7 +255,7 @@ To ensure our final model does not possess a bias based on map placement, I cond
 * **Alternative Hypothesis (H₁):** The model is unfair. Its accuracy for Red side games is significantly different from its accuracy for Blue side games.
 
 ### 3. Test Details
-* **Test Statistic:** The Absolute Difference in Accuracy between Blue side and Red side predictions (|Accuracy<sub>Blue</sub> - Accuracy<sub>Red</sub>|).
+* **Test Statistic:** The Absolute Difference in Accuracy between Blue side and Red side predictions (&#124;Accuracy<sub>Blue</sub> - Accuracy<sub>Red</sub>&#124;).
 * **Significance Level (α):** 0.05
 * **Method:** Permutation Test with 1,000 simulations shuffling the `side` labels.
 
