@@ -73,11 +73,7 @@ Below are the first five rows of the cleaned dataset used for modeling:
 
 This interactive histogram displays the distribution of T1's gold difference at the 10-minute mark across all analyzed matches. The distribution is centered slightly to the right of zero, indicating a trend where T1 more frequently secures a positive gold lead in the early game rather than falling behind.
 
-<iframe
-  src="assets/univariate_golddiffat10.html"
-  width="800"
-  height="600"
-  frameborder="0"></iframe>
+<iframe src="assets/univariate_golddiffat10_v2.html" width="800" height="600" frameborder="0"></iframe>
 
 ### Bivariate Analysis
 
