@@ -77,7 +77,7 @@ This interactive histogram displays the distribution of T1's gold difference at 
 
 ### Bivariate Analysis
 
-This scatter plot illustrates the relationship between T1's Gold Difference and Experience (XP) Difference at the 10-minute mark, with the data points colored by the final match result. There is a strong positive correlation between early gold and XP leads, and the distinct clustering of yellow "Win" points in the top-right quadrant demonstrates that when T1 secures an advantage in both resources early on, they are highly likely to win the match.
+This scatter plot illustrates the relationship between T1's Gold Difference and Experience (XP) Difference at the 10-minute mark, with the data points colored by the final match result. There is a strong positive correlation between early gold and XP leads, and the distinct clustering of red "Win" points in the top-right quadrant demonstrates that when T1 secures an advantage in both resources early on, they are highly likely to win the match.
 
 <iframe src="assets/bivariate_scatter_v2.html" width="800" height="600" frameborder="0"></iframe>
 
