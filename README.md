@@ -187,3 +187,88 @@ To ensure the model is a valid predictive tool and not simply a retrospective su
 The primary evaluation metric for this model is **Accuracy**, supported by the **F1-Score**.
 * **Accuracy:** This is a suitable baseline because the dataset is relatively balanced; top-tier professional teams like T1 generally have win rates that don't suffer from extreme class imbalance (e.g., they aren't winning 99% or 1% of the time). 
 * **Why F1-Score over just Accuracy?** While Accuracy measures overall correctness, it can be misleading if a team has a significantly high win rate; a "naive" model could achieve high accuracy by simply predicting a "Win" for every game regardless of the features. I chose to include the **F1-Score** (the harmonic mean of Precision and Recall) as a more robust metric. Unlike simple Accuracy, the F1-Score ensures that the model is penalized for both False Positives (predicting a win when they actually lose) and False Negatives (predicting a loss when they actually win), ensuring the model is truly learning the nuances of the early game rather than just the team's historical win rate.
+
+## Baseline Model
+
+### Model Description
+For the baseline model, I built a **Logistic Regression** classifier within a `scikit-learn` Pipeline to predict our binary response variable, `result` (Win/Loss). 
+
+### Features and Encoding
+The baseline model utilizes two initial features from the 10-minute mark. To prevent data leakage, all transformations were applied inside a column transformer pipeline before fitting the model.
+
+* **`side` (Nominal):** This categorical feature represents the map side T1 played on (Blue or Red). Because it is nominal (having no inherent mathematical order), I applied a `OneHotEncoder(drop='first')` to convert it into a binary numeric format (0 or 1) while avoiding the dummy variable trap.
+* **`golddiffat10` (Quantitative):** This continuous quantitative feature represents the gold difference at 10 minutes. As per the baseline requirements, I left this feature as-is using the `passthrough` command in the transformer.
+
+### Performance and Generalization
+To ensure the model can generalize to unseen data and isn't simply overfitting to the data it learned from, I performed a `train_test_split` and evaluated the model on both the training set and the held-out testing set.
+
+* **Training Accuracy:** 0.6510 (65.10%)
+* **Testing Accuracy:** 0.6316 (63.16%)
+* **Testing F1-Score:** 0.7407
+
+### Is this model "good"?
+At present, I consider this model **"adequate as a baseline, but not objectively good."** Because the Training Accuracy and Testing Accuracy are very close to each other, it proves that the model is successfully generalizing to unseen data without severe overfitting. An accuracy of ~63% means the model performs noticeably better than a random coin flip (50%), indicating that early gold leads and map side *do* hold predictive power. The F1-score of ~0.74 shows it is reasonably capable of balancing precision and recall when identifying wins. 
+
+However, 63% accuracy is too low to be considered a highly reliable predictive tool in professional esports. Attempting to predict a highly complex match using only a single gold metric and map side ignores other massive early-game factors like objective control, experience leads, and champion scaling. To create a "good" model, we must introduce additional, engineered features.
+
+## Final Model
+
+### Method of Algorithm Selection
+My method for selecting the **Random Forest Classifier** algorithm was based on evaluating the limitations of the baseline Logistic Regression. The baseline assumed a perfectly linear relationship between early-game stats and final outcomes, which is insufficient for the highly complex, interactive nature of League of Legends. I selected an ensemble decision tree model because it is natively equipped to capture non-linear interactions and complex thresholds without severely overfitting to the noisy esports data.
+
+### Engineered Features and Data-Generating Rationale
+To improve the model, I introduced new features and applied specific transformations based on the actual mechanics of how League of Legends is played (the data-generating process):
+
+1. **Robust Transformation on `golddiffat10` (QuantileTransformer):** * **The Addition:** I applied a `QuantileTransformer` to map the 10-minute gold difference to a normal, Gaussian-like distribution.
+   * **The Rationale:** In standard gameplay, early gold swings are relatively small and predictable. However, occasionally a chaotic "Level 1 Invade" or early team fight goes horribly wrong, resulting in a massive, abnormal gold spike for one team. These extreme outliers can heavily skew a model's understanding of a "normal" game. This transformation mitigates the impact of those rare chaotic matches, forcing the data into a distribution where the model isn't overly punished by extreme, uncharacteristic games.
+2. **Standardizing `killsat10` (StandardScaler):** * **The Addition:** I incorporated the total kills at 10 minutes (`killsat10`) into the model and applied a `StandardScaler`.
+   * **The Rationale:** The raw count of kills in the early game is on a drastically different, much smaller scale (e.g., 0 to 5) compared to economic metrics like gold, XP, or CS differentials (which are in the hundreds or thousands). Because machine learning algorithms often weigh larger numbers more heavily, leaving kills unscaled might cause the model to ignore early map aggression entirely. Standardizing this feature ensures it has a mean of 0 and a variance of 1, allowing the model to properly weigh early kills alongside massive economic leads.
+
+### Method of Hyperparameter Selection
+To select the optimal hyperparameters for this new algorithm, my method was utilizing **`GridSearchCV`**. This allowed me to exhaustively test different combinations of parameters using 5-fold cross-validation (`cv=5`) to ensure the model wouldn't overfit to a specific subset of the training data. 
+
+The Grid Search identified the following as the best performing hyperparameters:
+* **`max_depth`: 5** (Restricts the trees from growing too deep. A depth of 5 is the "sweet spot" that allows the model to learn complex patterns without perfectly memorizing the training data, effectively preventing overfitting.)
+* **`n_estimators`: 50** (Dictates that the "forest" is made of 50 individual decision trees. This provides enough models to reduce variance and create a stable consensus without adding unnecessary computational bloat.)
+
+### Final Model Performance and Conclusion
+After fitting the optimized Random Forest Pipeline with our newly engineered features, the model was evaluated on the **unseen testing set**.
+
+* **Baseline Testing Accuracy:** 0.6316 (63.16%)
+* **Final Testing Accuracy:** 0.6842 (68.42%)
+
+**Improvement:** The final model achieved an accuracy of **68.42%**, representing a solid **~5.2% absolute improvement** over the baseline model. Furthermore, looking at the classification report, the model is highly effective at identifying T1 victories (Recall: 0.85, F1-Score: 0.79 for the `True` class). 
+
+By accounting for outliers with the Quantile Transformer, scaling the `killsat10` metric so early aggression is properly weighted, and utilizing a non-linear Random Forest algorithm, the final model is significantly better equipped to analyze the complex early-game state of a professional League of Legends match.
+
+## Fairness Analysis
+
+To ensure our final model does not possess a bias based on map placement, I conducted a fairness analysis to see if the model's predictive accuracy differs significantly depending on which side T1 plays on.
+
+### 1. Groups and Evaluation Metric
+* **Group X:** Matches where T1 played on the **Blue Side**.
+* **Group Y:** Matches where T1 played on the **Red Side**.
+* **Evaluation Metric:** Accuracy (Testing for Overall Parity).
+
+### 2. Hypotheses
+* **Null Hypothesis (H₀):** The model is fair. Its accuracy for Blue side games and Red side games is roughly the same, and any observed differences are purely due to random chance.
+* **Alternative Hypothesis (H₁):** The model is unfair. Its accuracy for Red side games is significantly different from its accuracy for Blue side games.
+
+### 3. Test Details
+* **Test Statistic:** The Absolute Difference in Accuracy between Blue side and Red side predictions ($| \text{Accuracy}_{\text{Blue}} - \text{Accuracy}_{\text{Red}} |$).
+* **Significance Level (α):** 0.05
+* **Method:** Permutation Test with 1,000 simulations shuffling the `side` labels.
+
+### 4. Results and Visualization
+The baseline metrics on our test set showed a **Blue Side Accuracy of 0.6316** and a **Red Side Accuracy of 0.7368**, resulting in an **Observed Absolute Difference of 0.1053**.
+
+<iframe
+  src="assets/fairness_test.html"
+  width="800"
+  height="600"
+  frameborder="0"></iframe>
+
+### 5. Conclusion
+The permutation test yielded a **p-value of 0.7440**. 
+
+Because the p-value (0.7440) is significantly greater than our significance level (0.05), we **fail to reject the null hypothesis**. Visually, we can see in the distribution above that an accuracy difference of ~10.5% is extremely common just by random chance when shuffling the labels. Therefore, we can conclude that **our model is fair**. It achieves overall parity, meaning it does not predict significantly worse for T1 whether they are drafted on the Blue side or the Red side.
