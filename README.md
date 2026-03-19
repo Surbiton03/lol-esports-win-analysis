@@ -110,13 +110,19 @@ To move this column from **MNAR** to **MAR (Missing At Random)**, I would want t
 To determine if the missingness of `golddiffat10` is dependent on other variables, I conducted two permutation tests using **Total Variation Distance (TVD)** as the test statistic.
 
 --- Missingness vs. League ---
+
 Observed TVD: 0.9909
+
 P-value: 0.0000
+
 Conclusion: Reject the Null! Missingness DEPENDS on the league.
 
 --- Missingness vs. Side ---
+
 Observed TVD: 0.0000
+
 P-value: 1.0000
+
 Conclusion: Fail to Reject the Null. Missingness DOES NOT depend on the side.
 
 #### Test 1: Dependency on League
