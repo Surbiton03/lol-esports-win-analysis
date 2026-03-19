@@ -167,7 +167,7 @@ With a p-value of **0.0924**, which is greater than our significance level of **
 
 While the data shows that T1 averaged roughly 196 more gold on the Blue side than the Red side in this specific timeframe, the statistical evidence is not strong enough to conclude that this is a systematic advantage. This result suggests that the observed difference is reasonably likely to have occurred due to random variation in match performance rather than an inherent map-side advantage. We do not have sufficient evidence to support the claim that T1 performs significantly better on the Blue side early in the game.
 
-## Problem Identification
+## Framing a Prediction Problem
 
 ### The Prediction Problem
 The goal of this project is to predict whether a team (specifically **T1**) will win or lose a match based strictly on their performance and game state at the **10-minute mark**. 
